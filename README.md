@@ -47,7 +47,17 @@ Your task is to implement simulated annealing in MATLAB. You should start by cop
 $ cp hillClimb.m mySimAnnealing.m
 ```
 
-You can also do this within the MATLAB command line interface with the `copyfile` command. 
+You can also do this within the MATLAB command line interface with the `copyfile` command. You should try to convert the `hillClimb` function into a simulated annealing search. In `testFunc.m`, you will also need to change the function pointer on line 17 to your new function:
+
+```matlab
+fPtrSearch = 'mySimAnnealing';
+```
+
+and it is not sufficient to just change the name of the file. You will also need to alter the declaration on line 5 of your new local search code:
+
+```matlab
+function [isComplete,time] = mySimAnnealing( data, iterations )
+```
 
 A complete simulated annealing search should have no problem with this search space. Some sample results:
 
