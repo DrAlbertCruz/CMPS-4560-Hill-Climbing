@@ -1,42 +1,44 @@
 %% [VALUE INDEX RESULT TIME] = HILLCLIMB( DATA )
 %   Hill climb search. As we discussed in lecture, this will get stuck
-%   You may want to use this as a framework for your method instead.
+%   You may want to use this as a framework for your method.
 
-function [val,current,res,t] = hillClimb( data, iterations )
+function [isComplete,time] = hillClimb( data, iterations )
 %% Initialization
-% Start the timer after some book keepin not related to the algorithm
+% Start the timer after some book keeping not related to the algorithm
 % itself, e.g. get global maxima
 
 globalMax = max( data );        % Goal value
 n = length( data );             % Length of data
 initial = ceil( rand * n );     % Initial position
-res = false;                    % Set complete flag to false
-prev = [];
+isComplete = false;             % Set complete flag to false
+prev = -1;                      % Initialize previous index
 
 %% Go
 tic % Starts MATLAB's timer
 
-current = initial;
+position = initial;
 for k = 1:iterations
-    % Check if goal state ...
-    if current == prev
-        if data( current ) == globalMax
-            res = true; % ... if it somehow found the global optimum.
+    % Check if we did not move (we got stuck) ...
+    if position == prev 
+        % ... also if we're stuck on the goal state ...
+        if data(position) == globalMax
+            isComplete = true; % ... set completion flag ...
         end
-        break;
+        break; % ... then break.
     end
     
-    if( current > 2 && current <= n-1 )
-        if( data( current - 1 ) > data( current ) )
-            current = current - 1; 
-        elseif( data( current + 1 ) > data( current ) )
-            current = current + 1; 
-        end
+    % Look left
+    if position - 1 >= 1 && ... Make sure we don't go out of bounds
+            data( position - 1 ) > data( position )
+        position = position - 1; 
+    % Look right
+    elseif position + 1 <= n  && ... Make sure we don't go out of bounds
+            data( position + 1 ) > data( position )
+        position = position + 1;
     end
     
-    prev = current;     % Keep track of the previous so we know if were stuck
+    prev = position;     % Keep track of the previous so we know if were stuck
 end
 
 %% Stop
-t = toc;                    % Save toc to t, return it
-val = data( current );      % Return the value, not set above to save computation
+time = toc; % Save toc to t, return it

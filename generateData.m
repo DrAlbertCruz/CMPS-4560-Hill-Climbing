@@ -1,0 +1,26 @@
+% This code generates 'data.mat'. You should not need to modify this for
+% the lab.
+
+clear all
+close all
+clc
+
+range = 1:200;
+% Create random peaks
+data = normpdf(range,0,25)*rand() + ...
+    normpdf(range,25,25)*rand() + ...
+    normpdf(range,50,25)*rand() + ...
+    normpdf(range,75,25)*rand() + ...
+    normpdf(range,100,25)*rand() + ... 
+    normpdf(range,125,25)*rand() + ...
+    normpdf(range,150,25)*rand() + ...
+    normpdf(range,175,25)*rand() + ...
+    normpdf(range,200,25)*rand();
+
+data = data ./ max(data); % normalize to [0,1]
+
+% Add a bit of noise
+data = data + randn(1,200)*0.005;
+
+plot(data);
+
